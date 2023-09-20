@@ -1,36 +1,42 @@
 import "./App.css";
+import { useState, useEffect } from "react";
 import PointChart from "./components/PointChart";
 import TimeChart from "./components/TimeChart";
 import DateChart from "./components/DateChart";
 
-function App() {
-  const chartData = {
-    datasets: [
-      {
-        label: "Data points",
-        data: [
-          { datetime: "2023-09-17 23:04", x: 14.8, y: 67 },
-          { datetime: "2023-09-18 06:46", x: 12.8, y: 69 },
-          { datetime: "2023-09-18 10:52", x: 14.1, y: 69 },
-          { datetime: "2023-09-18 09:36", x: 13.6, y: 69 },
-          { datetime: "2023-09-18 11:03", x: 14.3, y: 70 },
-          { datetime: "2023-09-18 15:52", x: 17.9, y: 70 },
-          { datetime: "2023-09-18 17:01", x: 17.6, y: 70 },
-          { datetime: "2023-09-18 17:44", x: 17.3, y: 69 },
-          { datetime: "2023-09-18 19:17", x: 16.9, y: 69 },
-          { datetime: "2023-09-18 21:11", x: 16.5, y: 71 },
-          { datetime: "2023-09-18 21:56", x: 16.5, y: 72 },
-          { datetime: "2023-09-18 22:35", x: 16.5, y: 73 },
-          { datetime: "2023-09-19 07:39", x: 15.9, y: 78 },
-          { datetime: "2023-09-19 08:00", x: 15.9, y: 79 },
-          { datetime: "2023-09-19 08:34", x: 16.0, y: 80 },
-          { datetime: "2023-09-19 10:39", x: 15.9, y: 75 },
-        ],
+// Define a type for your data point
+type DataPoint = {
+  date: string;
+  x: number;
+  y: number;
+};
 
-        backgroundColor: "#00bb00",
-      },
-    ],
-  };
+function App() {
+  const [chartData, setChartData] = useState<DataPoint[]>([]);
+
+  useEffect(() => {
+    // Fetch data from the server
+    fetch("http://localhost:3001/api/data") // Replace with your server endpoint
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Transform the data into the expected format
+        const transformedData = data.map((entry: any) => ({
+          date: entry.date,
+          x: entry.temperatur, // Map 'temperatur' to 'x'
+          y: entry.luftfuktighet, // Map 'luftfuktighet' to 'y'
+        }));
+
+        setChartData(transformedData);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
   return (
     <>

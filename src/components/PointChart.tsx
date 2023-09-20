@@ -85,23 +85,37 @@ function PointChart(props: { data: any }) {
   };
 
   const { data } = props; // Destructure the data prop
+
+  // Check if data is empty or undefined before rendering the chart
+  if (!data) {
+    return <div>Loading...</div>; // You can customize the loading message here
+  }
+
+  const dataPoints = data.map((point: any) => ({
+    x: point.x,
+    y: point.y,
+  }));
+
   const chartData = {
-    datasets: data.datasets, // Extract datasets from the data prop
+    datasets: [
+      {
+        data: dataPoints,
+        label: "Temperatur",
+        borderColor: "rgba(255, 55, 55, 1)",
+        backgroundColor: "rgba(255, 55, 55, 0.2)",
+      },
+    ], // Extract datasets from the data prop
   };
 
   const options = {
     scales: {
       x: {
-        min: -15,
-        max: 50,
         ticks: {
           stepSize: 5,
         },
       },
 
       y: {
-        min: 25,
-        max: 100,
         ticks: {
           stepSize: 5,
         },

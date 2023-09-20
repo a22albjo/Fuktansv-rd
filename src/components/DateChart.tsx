@@ -13,12 +13,17 @@ ChartJS.register(TimeScale, LinearScale, Title, Tooltip, Legend);
 function DateChart(props: { data: any }) {
   const { data } = props; // Destructure the data prop
 
-  const dataPoints = data.datasets[0].data.map((point: any) => ({
-    x: new Date(point.datetime),
+  // Check if data is empty or undefined before rendering the chart
+  if (!data) {
+    return <div>Loading...</div>; // You can customize the loading message here
+  }
+
+  const dataPoints = data.map((point: any) => ({
+    x: new Date(point.date),
     y: point.x,
   }));
-  const dataPoints1 = data.datasets[0].data.map((point: any) => ({
-    x: new Date(point.datetime),
+  const dataPoints1 = data.map((point: any) => ({
+    x: new Date(point.date),
     y: point.y,
   }));
 
@@ -47,7 +52,7 @@ function DateChart(props: { data: any }) {
         time: {
           unit: "day", // You can adjust the time unit as needed (e.g., "day", "minute", etc.)
           displayFormats: {
-            hour: "MMM D", // // Display format for day and month
+            hour: "MMM D", // Display format for day and month
           },
         },
         title: {

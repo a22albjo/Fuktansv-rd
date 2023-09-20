@@ -13,6 +13,8 @@
     "aws-sdk": "^2.1460.0",
     "chart.js": "^4.4.0",
     "chartjs-adapter-date-fns": "^3.0.0",
+    "cors": "^2.8.5",
+    "express.js": "^1.0.0",
     "mock-aws-s3": "^4.0.2",
     "nock": "^13.3.3",
     "react": "^18.2.0",
