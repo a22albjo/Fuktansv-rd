@@ -69,8 +69,8 @@ function App() {
         }
         // Clear the form after a successful submission
         setFormData({
-          luftfuktighet: "",
-          temperatur: "",
+          luftfuktighet: "65",
+          temperatur: "15.0",
           kommentar: "",
         });
         // Fetch the updated data from the server

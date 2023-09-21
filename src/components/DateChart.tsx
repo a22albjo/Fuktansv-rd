@@ -21,10 +21,12 @@ function DateChart(props: { data: any }) {
   const dataPoints = data.map((point: any) => ({
     x: new Date(point.date),
     y: point.x,
+    kommentar: point.kommentar,
   }));
   const dataPoints1 = data.map((point: any) => ({
     x: new Date(point.date),
     y: point.y,
+    kommentar: point.kommentar,
   }));
 
   const chartData = {
@@ -68,6 +70,18 @@ function DateChart(props: { data: any }) {
       },
     },
     plugins: {
+      tooltip: {
+        callbacks: {
+          label: (context: any) => {
+            const x = context.raw.x;
+            const y = context.raw.y;
+            const kommentar = context.raw.kommentar;
+
+            // Customize the tooltip label to include date and kommentar
+            return `Värde: ${y}, Date: ${x}, ${kommentar || ""}`;
+          },
+        },
+      },
       legend: {
         position: "top" as const,
       },
