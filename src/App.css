@@ -52,7 +52,7 @@ input {
   font-size: 1em;
   font-family: inherit;
   transition: border-color 0.25s;
-  width: 40px;
+  width: 80px;
 }
 
 input:focus {

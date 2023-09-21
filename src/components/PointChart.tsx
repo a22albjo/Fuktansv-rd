@@ -94,17 +94,19 @@ function PointChart(props: { data: any }) {
   const dataPoints = data.map((point: any) => ({
     x: point.x,
     y: point.y,
+    date: point.date, // Include date in data
+    kommentar: point.kommentar, // Include kommentar in data
   }));
 
   const chartData = {
     datasets: [
       {
         data: dataPoints,
-        label: "Temperatur",
+        label: "Datapunkter",
         borderColor: "rgba(255, 55, 55, 1)",
         backgroundColor: "rgba(255, 55, 55, 0.2)",
       },
-    ], // Extract datasets from the data prop
+    ],
   };
 
   const options = {
@@ -114,10 +116,26 @@ function PointChart(props: { data: any }) {
           stepSize: 5,
         },
       },
-
       y: {
         ticks: {
           stepSize: 5,
+        },
+      },
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (context: any) => {
+            const point = context.parsed;
+            const date = context.raw.date;
+            const kommentar = context.raw.kommentar;
+            if (!point) return "";
+
+            // Customize the tooltip label to include date and kommentar
+            return `x: ${point.x}, y: ${point.y}, Date: ${date}, ${
+              kommentar || ""
+            }`;
+          },
         },
       },
     },
