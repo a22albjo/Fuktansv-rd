@@ -1,12 +1,12 @@
-import { Scatter } from "react-chartjs-2";
 import {
   Chart as ChartJS,
+  Legend,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
   Tooltip,
-  Legend,
 } from "chart.js";
+import { Scatter } from "react-chartjs-2";
 
 // Register Chart.js plugins
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
@@ -18,7 +18,7 @@ function PointChart(props: { data: any }) {
       const ctx = chart.ctx;
       const xAxis = chart.scales.x; // Use "x" for the x-axis
       const yAxis = chart.scales.y; // Use "y" for the y-axis
-      let lineColor = "#eedd3323";
+      let lineColor = "#99aaff23";
       let lineWidth = 3;
       ctx.save();
       ctx.beginPath();
@@ -38,7 +38,7 @@ function PointChart(props: { data: any }) {
       ctx.lineTo(xAxis.getPixelForValue(50), yAxis.getPixelForValue(100));
       ctx.stroke();
       ctx.fill();
-      lineColor = "#ffaa3323";
+      lineColor = "#5555ff23";
       ctx.fillStyle = lineColor;
       lineWidth = 3;
       ctx.save();
@@ -58,7 +58,7 @@ function PointChart(props: { data: any }) {
       ctx.lineTo(xAxis.getPixelForValue(50), yAxis.getPixelForValue(100));
       ctx.stroke();
       ctx.fill();
-      lineColor = "#ff000023";
+      lineColor = "#0000ff23";
       ctx.fillStyle = lineColor;
       lineWidth = 3;
       ctx.save();
@@ -103,8 +103,8 @@ function PointChart(props: { data: any }) {
       {
         data: dataPoints,
         label: "Datapunkter",
-        borderColor: "rgba(255, 55, 55, 1)",
-        backgroundColor: "rgba(255, 55, 55, 0.2)",
+        borderColor: "rgba(55, 95, 155, 0.5)",
+        backgroundColor: "rgba(55, 95, 155, 0.3)",
       },
     ],
   };
@@ -132,9 +132,9 @@ function PointChart(props: { data: any }) {
             if (!point) return "";
 
             // Customize the tooltip label to include date and kommentar
-            return `x: ${point.x}, y: ${point.y}, Date: ${date}, ${
-              kommentar || ""
-            }`;
+            return `Temperatur: ${point.x}˚c, Luftfuktighet: ${
+              point.y
+            }%, Date: ${date}, ${kommentar || ""}`;
           },
         },
       },

@@ -22,11 +22,13 @@ function TimeChart(props: { data: any }) {
   const dataPoints = data.map((point: any) => ({
     x: new Date("2000-01-01 " + point.date.slice(11)),
     y: point.x,
+    date: point.date,
     kommentar: point.kommentar,
   }));
   const dataPoints1 = data.map((point: any) => ({
     x: new Date("2000-01-01 " + point.date.slice(11)),
     y: point.y,
+    date: point.date,
     kommentar: point.kommentar,
   }));
 
@@ -74,7 +76,7 @@ function TimeChart(props: { data: any }) {
       tooltip: {
         callbacks: {
           label: (context: any) => {
-            const x = context.raw.x;
+            const x = context.raw.date;
             const y = context.raw.y;
             const kommentar = context.raw.kommentar;
 
