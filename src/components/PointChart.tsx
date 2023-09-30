@@ -84,6 +84,21 @@ function PointChart(props: { data: any }) {
     },
   };
 
+  const monthsColors = [
+    "#ff0000",
+    "#00ff00",
+    "#0000ff",
+    "#ffff00",
+    "#00ffff",
+    "#ff00ff",
+    "#ff8000",
+    "#ff0080",
+    "#80aa00",
+    "#0080ff",
+    "#8000ff",
+    "#00ff80",
+  ];
+
   const { data } = props; // Destructure the data prop
 
   // Check if data is empty or undefined before rendering the chart
@@ -91,20 +106,41 @@ function PointChart(props: { data: any }) {
     return <div>Loading...</div>; // You can customize the loading message here
   }
 
-  const dataPoints = data.map((point: any) => ({
-    x: point.x,
-    y: point.y,
-    date: point.date, // Include date in data
-    kommentar: point.kommentar, // Include kommentar in data
-  }));
+  const dataPoints = data.map((point: any) => {
+    if (point.date.slice(5, 7) === "09") {
+      return {
+        x: point.x,
+        y: point.y,
+        date: point.date,
+        kommentar: point.kommentar,
+      };
+    }
+  });
+
+  const dataPoints2 = data.map((point: any) => {
+    if (point.date.slice(5, 7) === "10") {
+      return {
+        x: point.x,
+        y: point.y,
+        date: point.date,
+        kommentar: point.kommentar,
+      };
+    }
+  });
 
   const chartData = {
     datasets: [
       {
         data: dataPoints,
-        label: "Datapunkter",
-        borderColor: "rgba(55, 95, 155, 0.5)",
-        backgroundColor: "rgba(55, 95, 155, 0.3)",
+        label: "September",
+        borderColor: monthsColors[8] + 88,
+        backgroundColor: monthsColors[8] + 55,
+      },
+      {
+        data: dataPoints2,
+        label: "Oktober",
+        borderColor: monthsColors[9] + 88,
+        backgroundColor: monthsColors[9] + 55,
       },
     ],
   };
