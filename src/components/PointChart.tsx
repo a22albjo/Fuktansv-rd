@@ -106,41 +106,28 @@ function PointChart(props: { data: any }) {
     return <div>Loading...</div>; // You can customize the loading message here
   }
 
-  const dataPoints = data.map((point: any) => {
-    if (point.date.slice(5, 7) === "09") {
-      return {
-        x: point.x,
-        y: point.y,
-        date: point.date,
-        kommentar: point.kommentar,
-      };
-    }
-  });
+  // Filter data for September and October
+  const dataPointsSeptember = data.filter(
+    (point: any) => point.date.slice(5, 7) === "09"
+  );
 
-  const dataPoints2 = data.map((point: any) => {
-    if (point.date.slice(5, 7) === "10") {
-      return {
-        x: point.x,
-        y: point.y,
-        date: point.date,
-        kommentar: point.kommentar,
-      };
-    }
-  });
+  const dataPointsOctober = data.filter(
+    (point: any) => point.date.slice(5, 7) === "10"
+  );
 
   const chartData = {
     datasets: [
       {
-        data: dataPoints,
+        data: dataPointsSeptember,
         label: "September",
-        borderColor: monthsColors[8] + 88,
-        backgroundColor: monthsColors[8] + 55,
+        borderColor: monthsColors[8],
+        backgroundColor: monthsColors[8] + "55",
       },
       {
-        data: dataPoints2,
+        data: dataPointsOctober,
         label: "Oktober",
-        borderColor: monthsColors[9] + 88,
-        backgroundColor: monthsColors[9] + 55,
+        borderColor: monthsColors[9],
+        backgroundColor: monthsColors[9] + "55",
       },
     ],
   };
