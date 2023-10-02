@@ -138,10 +138,18 @@ function PointChart(props: { data: any }) {
         ticks: {
           stepSize: 5,
         },
+        title: {
+          display: true,
+          text: "Luftfuktighet",
+        },
       },
       y: {
         ticks: {
           stepSize: 5,
+        },
+        title: {
+          display: true,
+          text: "Temperatur",
         },
       },
     },
