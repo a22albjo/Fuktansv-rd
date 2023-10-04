@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import PointChart from "./components/PointChart";
 import TimeChart from "./components/TimeChart";
 import DateChart from "./components/DateChart";
+import Table from "./components/Table";
 
 // Define a type for your data point
 type DataPoint = {
@@ -153,6 +154,9 @@ function App() {
         </div>
         <div className="chartContainer">
           <TimeChart data={chartData} />
+        </div>
+        <div>
+          <Table data={chartData} />
         </div>
       </div>
     </>
