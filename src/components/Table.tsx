@@ -7,33 +7,32 @@ function Table(props: { data: any }) {
   }
 
   // Initialize arrays to store monthly statistics
-  const monthlyStats = new Array(12).fill({
+  const monthlyStats = Array.from({ length: 12 }, () => ({
     avgTemperature: 0,
     maxTemperature: -Infinity,
     minTemperature: Infinity,
     avgHumidity: 0,
     maxHumidity: -Infinity,
     minHumidity: Infinity,
-  });
+  }));
 
   // Calculate monthly statistics from the data
   data.forEach((point: any) => {
     const month = new Date(point.date).getMonth();
-    monthlyStats[month].avgTemperature += point.x;
-    monthlyStats[month].avgHumidity += point.y;
-    console.log(monthlyStats[month].avgTemperature);
+    monthlyStats[month].avgTemperature += point.temperatur;
+    monthlyStats[month].avgHumidity += point.luftfuktighet;
 
-    if (point.x > monthlyStats[month].maxTemperature) {
-      monthlyStats[month].maxTemperature = point.x;
+    if (point.temperatur > monthlyStats[month].maxTemperature) {
+      monthlyStats[month].maxTemperature = point.temperatur;
     }
-    if (point.x < monthlyStats[month].minTemperature) {
-      monthlyStats[month].minTemperature = point.x;
+    if (point.temperatur < monthlyStats[month].minTemperature) {
+      monthlyStats[month].minTemperature = point.temperatur;
     }
-    if (point.y > monthlyStats[month].maxHumidity) {
-      monthlyStats[month].maxHumidity = point.y;
+    if (point.luftfuktighet > monthlyStats[month].maxHumidity) {
+      monthlyStats[month].maxHumidity = point.luftfuktighet;
     }
-    if (point.y < monthlyStats[month].minHumidity) {
-      monthlyStats[month].minHumidity = point.y;
+    if (point.luftfuktighet < monthlyStats[month].minHumidity) {
+      monthlyStats[month].minHumidity = point.luftfuktighet;
     }
   });
 
@@ -82,13 +81,22 @@ function Table(props: { data: any }) {
       <tbody>
         {monthlyStats.map((stats, index) => (
           <tr key={index}>
-            <td>{monthNames[index]}</td>
-            <td>{stats.avgHumidity.toFixed(2)}</td>
-            <td>{stats.maxHumidity.toFixed(2)}</td>
-            <td>{stats.minHumidity.toFixed(2)}</td>
-            <td>{stats.avgTemperature.toFixed(2)}</td>
-            <td>{stats.maxTemperature.toFixed(2)}</td>
-            <td>{stats.minTemperature.toFixed(2)}</td>
+            <th>{monthNames[index]}</th>
+
+            {stats.avgHumidity === 0 ? (
+              <>
+                <td colSpan={6}>Inga mätningar registrarade denna månad</td>
+              </>
+            ) : (
+              <>
+                <td>{stats.avgHumidity.toFixed(2)}</td>
+                <td>{stats.maxHumidity.toFixed(2)}</td>
+                <td>{stats.minHumidity.toFixed(2)}</td>
+                <td>{stats.avgTemperature.toFixed(2)}</td>
+                <td>{stats.maxTemperature.toFixed(2)}</td>
+                <td>{stats.minTemperature.toFixed(2)}</td>
+              </>
+            )}
           </tr>
         ))}
       </tbody>

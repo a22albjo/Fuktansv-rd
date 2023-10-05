@@ -115,16 +115,29 @@ function PointChart(props: { data: any }) {
     (point: any) => point.date.slice(5, 7) === "10"
   );
 
+  const dataPoints = dataPointsSeptember.map((point: any) => ({
+    x: point.temperatur,
+    y: point.luftfuktighet,
+    date: point.date,
+    kommentar: point.kommentar,
+  }));
+  const dataPoints1 = dataPointsOctober.map((point: any) => ({
+    x: point.temperatur,
+    y: point.luftfuktighet,
+    date: point.date,
+    kommentar: point.kommentar,
+  }));
+
   const chartData = {
     datasets: [
       {
-        data: dataPointsSeptember,
+        data: dataPoints,
         label: "September",
         borderColor: monthsColors[8],
         backgroundColor: monthsColors[8] + "55",
       },
       {
-        data: dataPointsOctober,
+        data: dataPoints1,
         label: "Oktober",
         borderColor: monthsColors[9],
         backgroundColor: monthsColors[9] + "55",

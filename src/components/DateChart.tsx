@@ -20,12 +20,12 @@ function DateChart(props: { data: any }) {
 
   const dataPoints = data.map((point: any) => ({
     x: new Date(point.date),
-    y: point.x,
+    y: point.temperatur,
     kommentar: point.kommentar,
   }));
   const dataPoints1 = data.map((point: any) => ({
     x: new Date(point.date),
-    y: point.y,
+    y: point.luftfuktighet,
     kommentar: point.kommentar,
   }));
 

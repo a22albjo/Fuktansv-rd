@@ -21,13 +21,13 @@ function TimeChart(props: { data: any }) {
 
   const dataPoints = data.map((point: any) => ({
     x: new Date("2000-01-01 " + point.date.slice(11)),
-    y: point.x,
+    y: point.temperatur,
     date: point.date,
     kommentar: point.kommentar,
   }));
   const dataPoints1 = data.map((point: any) => ({
     x: new Date("2000-01-01 " + point.date.slice(11)),
-    y: point.y,
+    y: point.luftfuktighet,
     date: point.date,
     kommentar: point.kommentar,
   }));

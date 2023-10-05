@@ -8,8 +8,8 @@ import Table from "./components/Table";
 // Define a type for your data point
 type DataPoint = {
   date: string;
-  x: number;
-  y: number;
+  temperatur: number;
+  luftfuktighet: number;
   kommentar?: string;
 };
 
@@ -34,8 +34,8 @@ function App() {
         // Transform the data into the expected format
         const transformedData = data.map((entry: any) => ({
           date: entry.date,
-          x: entry.temperatur, // Map 'temperatur' to 'x'
-          y: entry.luftfuktighet, // Map 'luftfuktighet' to 'y'
+          temperatur: entry.temperatur, // Map 'temperatur' to 'x'
+          luftfuktighet: entry.luftfuktighet, // Map 'luftfuktighet' to 'y'
           kommentar: entry.kommentar,
         }));
 
@@ -87,8 +87,8 @@ function App() {
         // Transform the data into the expected format
         const transformedData = data.map((entry: any) => ({
           date: entry.date,
-          x: entry.temperatur, // Map 'temperatur' to 'x'
-          y: entry.luftfuktighet, // Map 'luftfuktighet' to 'y'
+          temperatur: entry.temperatur, // Map 'temperatur' to 'x'
+          luftfuktighet: entry.luftfuktighet, // Map 'luftfuktighet' to 'y'
           kommentar: entry.kommentar,
         }));
 
@@ -155,7 +155,7 @@ function App() {
         <div className="chartContainer">
           <TimeChart data={chartData} />
         </div>
-        <div>
+        <div className="tableContainer">
           <Table data={chartData} />
         </div>
       </div>
