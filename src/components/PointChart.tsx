@@ -77,7 +77,6 @@ function PointChart(props: { data: any }) {
       ctx.lineTo(xAxis.getPixelForValue(40), yAxis.getPixelForValue(84));
       ctx.lineTo(xAxis.getPixelForValue(50), yAxis.getPixelForValue(83));
       ctx.lineTo(xAxis.getPixelForValue(50), yAxis.getPixelForValue(100));
-
       ctx.stroke();
       ctx.fill();
       ctx.restore();
@@ -106,44 +105,36 @@ function PointChart(props: { data: any }) {
     return <div>Loading...</div>; // You can customize the loading message here
   }
 
-  // Filter data for September and October
-  const dataPointsSeptember = data.filter(
-    (point: any) => point.date.slice(5, 7) === "09"
+  // Extract unique years and months from the data
+  const uniqueYears = Array.from(
+    new Set(data.map((point: any) => point.date.slice(0, 4)))
   );
 
-  const dataPointsOctober = data.filter(
-    (point: any) => point.date.slice(5, 7) === "10"
-  );
+  const months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-  const dataPoints = dataPointsSeptember.map((point: any) => ({
-    x: point.temperatur,
-    y: point.luftfuktighet,
-    date: point.date,
-    kommentar: point.kommentar,
-  }));
-  const dataPoints1 = dataPointsOctober.map((point: any) => ({
-    x: point.temperatur,
-    y: point.luftfuktighet,
-    date: point.date,
-    kommentar: point.kommentar,
-  }));
+  // Generate datasets for each year-month combination
+  const datasets = uniqueYears.flatMap((year) => {
+    return months.map((month, monthIndex) => {
+      const dataPoints = data
+        .filter((point: any) => point.date.slice(0, 4) === year && point.date.slice(5, 7) === month)
+        .map((point: any) => ({
+          x: point.temperatur,
+          y: point.luftfuktighet,
+          date: point.date,
+          kommentar: point.kommentar,
+        }));
 
-  const chartData = {
-    datasets: [
-      {
+      return {
         data: dataPoints,
-        label: "September",
-        borderColor: monthsColors[8],
-        backgroundColor: monthsColors[8] + "55",
-      },
-      {
-        data: dataPoints1,
-        label: "Oktober",
-        borderColor: monthsColors[9],
-        backgroundColor: monthsColors[9] + "55",
-      },
-    ],
-  };
+        label: `${monthNames[monthIndex]} ${year}`,
+        borderColor: monthsColors[monthIndex % monthsColors.length], // Adjust index to match month colors
+        backgroundColor: monthsColors[monthIndex % monthsColors.length] + "55",
+      };
+    });
+  }).filter(dataset => dataset.data.length > 0); // Remove empty datasets
+
+  const chartData = { datasets };
 
   const options = {
     scales: {
@@ -153,7 +144,7 @@ function PointChart(props: { data: any }) {
         },
         title: {
           display: true,
-          text: "Luftfuktighet",
+          text: "Temperatur",
         },
       },
       y: {
@@ -162,7 +153,7 @@ function PointChart(props: { data: any }) {
         },
         title: {
           display: true,
-          text: "Temperatur",
+          text: "Luftfuktighet",
         },
       },
     },
@@ -176,11 +167,12 @@ function PointChart(props: { data: any }) {
             if (!point) return "";
 
             // Customize the tooltip label to include date and kommentar
-            return `Temperatur: ${point.x}˚c, Luftfuktighet: ${
-              point.y
-            }%, Date: ${date}, ${kommentar || ""}`;
+            return `Temperatur: ${point.x}˚c, Luftfuktighet: ${point.y}%, Date: ${date}, ${kommentar || ""}`;
           },
         },
+      },
+      legend: {
+        position: "top" as const,
       },
     },
   };

@@ -4,6 +4,7 @@ import PointChart from "./components/PointChart";
 import TimeChart from "./components/TimeChart";
 import DateChart from "./components/DateChart";
 import Table from "./components/Table";
+import CompareMonth from "./components/CompareMonth";
 
 // Define a type for your data point
 type DataPoint = {
@@ -14,6 +15,8 @@ type DataPoint = {
 };
 
 function App() {
+  const [month1, setMonth1] = useState<string>("01"); // Default to January
+  const [month2, setMonth2] = useState<string>("02"); // Default to February
   const [chartData, setChartData] = useState<DataPoint[]>([]);
   const [formData, setFormData] = useState({
     luftfuktighet: "65",
@@ -154,6 +157,27 @@ function App() {
         </div>
         <div className="chartContainer">
           <TimeChart data={chartData} />
+        </div>
+        <div className="chartContainer">
+        <select value={month1} onChange={(e) => setMonth1(e.target.value)}>
+          {Array.from(new Set(chartData.map((dataset) => dataset.date.slice(5,7)))).map(
+            (uniqueMonth, index) => (
+              <option key={index} value={uniqueMonth}>
+                {uniqueMonth}
+              </option>
+            )
+          )}
+        </select>
+        <select value={month2} onChange={(e) => setMonth2(e.target.value)}>
+          {Array.from(new Set(chartData.map((dataset) => dataset.date.slice(5,7)))).map(
+            (uniqueMonth, index) => (
+              <option key={index} value={uniqueMonth}>
+                {uniqueMonth}
+              </option>
+            )
+          )}
+        </select>
+          <CompareMonth data={chartData} month1={month1} month2={month2} />
         </div>
         <div className="tableContainer">
           <Table data={chartData} />

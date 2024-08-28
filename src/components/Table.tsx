@@ -14,6 +14,7 @@ function Table(props: { data: any }) {
     avgHumidity: 0,
     maxHumidity: -Infinity,
     minHumidity: Infinity,
+    numberOfDataPoints: 0,
   }));
 
   // Calculate monthly statistics from the data
@@ -21,6 +22,7 @@ function Table(props: { data: any }) {
     const month = new Date(point.date).getMonth();
     monthlyStats[month].avgTemperature += point.temperatur;
     monthlyStats[month].avgHumidity += point.luftfuktighet;
+    monthlyStats[month].numberOfDataPoints++;
 
     if (point.temperatur > monthlyStats[month].maxTemperature) {
       monthlyStats[month].maxTemperature = point.temperatur;
@@ -76,6 +78,7 @@ function Table(props: { data: any }) {
           <th>Temperatur snitt</th>
           <th>Temperatur max</th>
           <th>Temperatur min</th>
+          <th>Antal mätningar</th>
         </tr>
       </thead>
       <tbody>
@@ -95,6 +98,7 @@ function Table(props: { data: any }) {
                 <td>{stats.avgTemperature.toFixed(2)}</td>
                 <td>{stats.maxTemperature.toFixed(2)}</td>
                 <td>{stats.minTemperature.toFixed(2)}</td>
+                <td>{stats.numberOfDataPoints}</td>
               </>
             )}
           </tr>
