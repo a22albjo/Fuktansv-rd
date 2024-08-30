@@ -128,11 +128,16 @@ function PointChart(props: { data: any }) {
       return {
         data: dataPoints,
         label: `${monthNames[monthIndex]} ${year}`,
-        borderColor: monthsColors[monthIndex % monthsColors.length], // Adjust index to match month colors
-        backgroundColor: monthsColors[monthIndex % monthsColors.length] + "55",
+        borderColor: monthsColors[monthIndex],
+        backgroundColor: monthsColors[monthIndex] + "aa",
       };
     });
   }).filter(dataset => dataset.data.length > 0); // Remove empty datasets
+
+//if a kommentar is added to the data, the point will have a different color
+  datasets.forEach((dataset) => {
+    dataset.borderColor = dataset.data.map((point: any) => point.kommentar ? "#00000099" : "#00000000");
+  });
 
   const chartData = { datasets };
 
@@ -166,7 +171,6 @@ function PointChart(props: { data: any }) {
             const kommentar = context.raw.kommentar;
             if (!point) return "";
 
-            // Customize the tooltip label to include date and kommentar
             return `Temperatur: ${point.x}˚c, Luftfuktighet: ${point.y}%, Date: ${date}, ${kommentar || ""}`;
           },
         },
