@@ -22,124 +22,88 @@ function DateChart(props: { data: any }) {
     return <div>Loading...</div>; // You can customize the loading message here
   }
 
-  const dataPoints = data.map((point: any) => ({
-    x: new Date(point.date),
-    y: point.temperatur,
-    kommentar: point.kommentar,
-  }));
+  // Normalize the date to the same base year (e.g., 1970)
+  const normalizeDate = (date: Date) => {
+    return new Date(1970, date.getMonth(), date.getDate());
+  };
 
-  const dataPoints1 = data.map((point: any) => ({
-    x: new Date(point.date),
-    y: point.luftfuktighet,
-    kommentar: point.kommentar,
-  }));
-
-  // Group data points by day and calculate daily averages
-  const dailyAverages: {
-    [key: string]: {
-      temperaturSum: number;
-      luftfuktighetSum: number;
-      count: number;
-    };
-  } = {};
+  // Initialize an object to group data by year for both Temperatur and Luftfuktighet
+  const groupedData: { [year: string]: { temperatur: any[]; luftfuktighet: any[] } } = {};
 
   data.forEach((point: any) => {
     const date = new Date(point.date);
-    const day = date.toDateString(); // Get the date string (e.g., "Mon Oct 06 2023")
+    const year = date.getFullYear();
 
-    // Initialize daily average objects if they don't exist
-    if (!dailyAverages[day]) {
-      dailyAverages[day] = {
-        temperaturSum: 0,
-        luftfuktighetSum: 0,
-        count: 0,
-      };
+    // Initialize the year object if it doesn't exist
+    if (!groupedData[year]) {
+      groupedData[year] = { temperatur: [], luftfuktighet: [] };
     }
 
-    // Add data to daily average calculations
-    dailyAverages[day].temperaturSum += point.temperatur;
-    dailyAverages[day].luftfuktighetSum += point.luftfuktighet;
-    dailyAverages[day].count += 1;
+    // Normalize the date to ignore the year
+    const normalizedDate = normalizeDate(date);
+
+    // Add data points to the respective arrays for each year
+    groupedData[year].temperatur.push({
+      x: normalizedDate,
+      y: point.temperatur,
+      kommentar: point.kommentar,
+    });
+
+    groupedData[year].luftfuktighet.push({
+      x: normalizedDate,
+      y: point.luftfuktighet,
+      kommentar: point.kommentar,
+    });
   });
 
-  // Create an array of data points for the daily averages
-  const dailyAverageData = Object.keys(dailyAverages).map((day) => {
-    const averageTemperatur =
-      dailyAverages[day].temperaturSum / dailyAverages[day].count;
-    const averageLuftfuktighet =
-      dailyAverages[day].luftfuktighetSum / dailyAverages[day].count;
-
-    return {
-      x: new Date(day),
-      y: averageTemperatur,
-      luftfuktighet: averageLuftfuktighet,
-    };
-  });
-
-  const dailyAverageData1 = Object.keys(dailyAverages).map((day) => {
-    const averageTemperatur =
-      dailyAverages[day].temperaturSum / dailyAverages[day].count;
-    const averageLuftfuktighet =
-      dailyAverages[day].luftfuktighetSum / dailyAverages[day].count;
-
-    return {
-      x: new Date(day),
-      y: averageLuftfuktighet,
-      temperatur: averageTemperatur,
-    };
-  });
+  // Create datasets dynamically for each year and each data type (Temperatur and Luftfuktighet)
+  const datasets = Object.keys(groupedData).flatMap((year) => [
+    {
+      data: groupedData[year].temperatur,
+      label: `Temperatur ${year}`,
+      borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
+        Math.random() * 255
+      )}, ${Math.floor(Math.random() * 255)}, 1)`, // Random color for each year's Temperatur
+      backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
+        Math.random() * 255
+      )}, ${Math.floor(Math.random() * 255)}, 0.2)`,
+      pointRadius: 2,
+      tension: 0.3,
+    },
+    {
+      data: groupedData[year].luftfuktighet,
+      label: `Luftfuktighet ${year}`,
+      borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
+        Math.random() * 255
+      )}, ${Math.floor(Math.random() * 255)}, 1)`, // Random color for each year's Luftfuktighet
+      backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(
+        Math.random() * 255
+      )}, ${Math.floor(Math.random() * 255)}, 0.2)`,
+      pointRadius: 2,
+      tension: 0.3,
+    },
+  ]);
 
   const chartData = {
-    datasets: [
-      {
-        data: dataPoints,
-        label: "Temperatur",
-        borderColor: "rgba(255, 55, 55, 1)",
-        backgroundColor: "rgba(255, 55, 55, 0.2)",
-        pointRadius: 2,
-        tension: 0.3,
-      },
-      {
-        data: dataPoints1,
-        label: "Luftfuktighet",
-        borderColor: "rgba(15, 55, 255, 1)",
-        backgroundColor: "rgba(15, 55, 255, 0.2)",
-        pointRadius: 2,
-        tension: 0.3,
-      },
-      {
-        data: dailyAverageData,
-        label: "Average Temperatur",
-        borderColor: "rgba(255, 55, 55, 0.6)",
-        backgroundColor: "rgba(255, 55, 55, 0.2)",
-        pointRadius: 3,
-        tension: 0.4,
-      },
-      {
-        data: dailyAverageData1,
-        label: "Average Luftfuktighet",
-        borderColor: "rgba(15, 55, 255, 0.6)",
-        backgroundColor: "rgba(15, 55, 255, 0.2)",
-        pointRadius: 3,
-        tension: 0.4,
-      },
-    ],
+    datasets,
   };
 
   const options = {
     responsive: true,
     scales: {
       x: {
-        type: "time" as const, // Corrected to use the "time" scale type
+        type: "time" as const,
         time: {
-          unit: "day" as const, // Explicitly type the unit as one of the allowed literals
+          unit: "month" as const,
           displayFormats: {
-            day: "MMM d", // Correct display format for day
+            month: "MMM", // Display only the month
+            day: "MMM d", // To show both month and day in tooltips
           },
+          tooltipFormat: "MMM d", // Tooltip shows day and month
         },
         title: {
           display: true,
-          text: "Date",
+          text: "Month and Day",
         },
       },
       y: {
