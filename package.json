@@ -15,6 +15,7 @@
     "chartjs-adapter-date-fns": "^3.0.0",
     "chartjs-chart-financial": "^0.2.1",
     "cors": "^2.8.5",
+    "date-fns": "^3.6.0",
     "express.js": "^1.0.0",
     "mock-aws-s3": "^4.0.2",
     "nock": "^13.3.3",

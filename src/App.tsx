@@ -160,7 +160,7 @@ function App() {
         </div>
         <div className="chartContainer">
         <select value={month1} onChange={(e) => setMonth1(e.target.value)}>
-          {Array.from(new Set(chartData.map((dataset) => dataset.date.slice(5,7)))).map(
+          {Array.from(new Set(chartData.map((dataset) => dataset.date.slice(0,7)))).map(
             (uniqueMonth, index) => (
               <option key={index} value={uniqueMonth}>
                 {uniqueMonth}
@@ -169,7 +169,7 @@ function App() {
           )}
         </select>
         <select value={month2} onChange={(e) => setMonth2(e.target.value)}>
-          {Array.from(new Set(chartData.map((dataset) => dataset.date.slice(5,7)))).map(
+          {Array.from(new Set(chartData.map((dataset) => dataset.date.slice(0,7)))).map(
             (uniqueMonth, index) => (
               <option key={index} value={uniqueMonth}>
                 {uniqueMonth}

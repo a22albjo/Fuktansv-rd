@@ -92,16 +92,10 @@ import {
       return <div>Loading...</div>; // You can customize the loading message here
     }
   
-    // Validate if months are correctly provided
-    const validMonths = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-    if (!validMonths.includes(month1) || !validMonths.includes(month2)) {
-      return <div>Invalid months selected. Please select valid months.</div>;
-    }
-  
     // Filter data for the two specified months
     const datasets = [month1, month2].map((month, index) => {
       const dataPoints = data
-        .filter((point: any) => point.date.slice(5, 7) === month)
+        .filter((point: any) => point.date.slice(0, 7) === month)
         .map((point: any) => ({
           x: point.temperatur,
           y: point.luftfuktighet,
