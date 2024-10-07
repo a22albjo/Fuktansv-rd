@@ -91,7 +91,8 @@ function TimeChart(props: { data: any }) {
     },
   };
 
-  return <Line options={options} data={chartData} />;
+  return (
+  <Line options={options} data={chartData} />);
 }
 
 export default TimeChart;

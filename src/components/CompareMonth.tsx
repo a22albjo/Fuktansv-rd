@@ -6,12 +6,15 @@ import {
     PointElement,
     Tooltip,
   } from "chart.js";
-  import { Scatter } from "react-chartjs-2";
+import { useState } from "react";
+import { Scatter } from "react-chartjs-2";
   
   // Register Chart.js plugins
   ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
   
-  function CompareMonth(props: { data: any; month1: string; month2: string }) {
+  function CompareMonth(props: { data: any; }) {
+    const [month1, setMonth1] = useState<string>("2023-09"); // Default to January
+    const [month2, setMonth2] = useState<string>("2024-09"); // Default to February
     const scatterArbitraryLine = {
       id: "scatter-arbitrary-line",
       beforeDraw(chart: any) {
@@ -83,7 +86,7 @@ import {
       },
     };
   
-    const { data, month1, month2 } = props; // Destructure data and the two months to compare
+    const { data } = props; // Destructure data and the two months to compare
   
     const monthsColors = ["#ff0000", "#0000ff"]; // Two distinct colors for comparison
   
@@ -155,8 +158,30 @@ import {
     };
   
     const plugins = [scatterArbitraryLine];
-  
-    return <Scatter data={chartData} options={options} plugins={plugins} />;
+
+    return (
+      <div>
+        <select value={month1} onChange={(e) => setMonth1(e.target.value)}>
+        {Array.from(new Set(data.map((dataset: { date: string | any[]; }) => dataset.date.slice(0,7)))).map(
+          (uniqueMonth:any, index) => (
+            <option key={index} value={uniqueMonth}>
+              {uniqueMonth}
+            </option>
+          )
+        )}
+      </select>
+      <select value={month2} onChange={(e) => setMonth2(e.target.value)}>
+        {Array.from(new Set(data.map((dataset: { date: string | any[]; }) => dataset.date.slice(0,7)))).map(
+          (uniqueMonth: any, index) => (
+            <option key={index} value={uniqueMonth}>
+              {uniqueMonth}
+            </option>
+          )
+        )}
+      </select>
+      <Scatter data={chartData} options={options} plugins={plugins} />
+    </div>
+    );
   }
   
   export default CompareMonth;

@@ -15,8 +15,6 @@ type DataPoint = {
 };
 
 function App() {
-  const [month1, setMonth1] = useState<string>("01"); // Default to January
-  const [month2, setMonth2] = useState<string>("02"); // Default to February
   const [chartData, setChartData] = useState<DataPoint[]>([]);
   const [formData, setFormData] = useState({
     luftfuktighet: "65",
@@ -94,7 +92,6 @@ function App() {
           luftfuktighet: entry.luftfuktighet, // Map 'luftfuktighet' to 'y'
           kommentar: entry.kommentar,
         }));
-
         setChartData(transformedData);
       })
       .catch((error) => {
@@ -159,25 +156,7 @@ function App() {
           <TimeChart data={chartData} />
         </div>
         <div className="chartContainer">
-        <select value={month1} onChange={(e) => setMonth1(e.target.value)}>
-          {Array.from(new Set(chartData.map((dataset) => dataset.date.slice(0,7)))).map(
-            (uniqueMonth, index) => (
-              <option key={index} value={uniqueMonth}>
-                {uniqueMonth}
-              </option>
-            )
-          )}
-        </select>
-        <select value={month2} onChange={(e) => setMonth2(e.target.value)}>
-          {Array.from(new Set(chartData.map((dataset) => dataset.date.slice(0,7)))).map(
-            (uniqueMonth, index) => (
-              <option key={index} value={uniqueMonth}>
-                {uniqueMonth}
-              </option>
-            )
-          )}
-        </select>
-          <CompareMonth data={chartData} month1={month1} month2={month2} />
+          <CompareMonth data={chartData} />
         </div>
         <div className="tableContainer">
           <Table data={chartData} />
