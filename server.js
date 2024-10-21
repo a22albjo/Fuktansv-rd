@@ -25,6 +25,19 @@ app.get("/api/data", (req, res) => {
   });
 });
 
+// Define a route to fetch data from the database
+app.get("/api/SMHIdata", (req, res) => {
+  const query = "SELECT * FROM SMHIDataPoint"; // Replace with your table name
+  db.all(query, (err, rows) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.json(rows);
+    }
+  });
+});
+
 app.post("/api/newData", (req, res) => {
   const { luftfuktighet, temperatur, kommentar } = req.body;
   function formatDateTime(date) {
